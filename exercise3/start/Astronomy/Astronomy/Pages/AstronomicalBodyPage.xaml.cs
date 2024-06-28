@@ -1,16 +1,27 @@
 namespace Astronomy.Pages;
 
+[QueryProperty(nameof(AstroName), "AstroName")]
 public partial class AstronomicalBodyPage : ContentPage
 {
+    private string _astroName;
+    public string AstroName
+    {
+        get => _astroName;
+        set
+        {
+            _astroName = value;
+            UpdateAstroBodyUi(_astroName);
+        }
+    }
 
     public AstronomicalBodyPage()
     {
         InitializeComponent();
     }
 
-    void UpdateAstroBodyUI(string astroName)
+    private void UpdateAstroBodyUi(string astroName)
     {
-        AstronomicalBody body = FindAstroData(astroName);
+        var body = FindAstroData(astroName);
 
         Title = body.Name;
 
@@ -21,15 +32,15 @@ public partial class AstronomicalBodyPage : ContentPage
         lblAge.Text = body.Age;
     }
 
-    AstronomicalBody FindAstroData(string astronomicalBodyName)
+    private static AstronomicalBody FindAstroData(string astronomicalBodyName)
     {
         return astronomicalBodyName switch
         {
-            "comet" => SolarSystemData.HalleysComet,
-            "earth" => SolarSystemData.Earth,
-            "moon" => SolarSystemData.Moon,
-            "sun" => SolarSystemData.Sun,
-            _ => throw new ArgumentException()
+            "Comet" => SolarSystemData.HalleysComet,
+            "Earth" => SolarSystemData.Earth,
+            "Moon" => SolarSystemData.Moon,
+            "Sun" => SolarSystemData.Sun,
+            _ => throw new ArgumentException("Invalid astronomical body name.")
         };
     }
 }
